@@ -4,5 +4,3 @@ loopsnelheid (wanneer ik bezig ben)
 Consistentie termen
 
 AI behaviour tree uitschrijven
-
-Flowboard -> alle situaties coveren

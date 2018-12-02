@@ -9,6 +9,8 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     [SerializeField] private CharacterController _charCTRL;
 
     [SerializeField] private Transform _absoluteForward; //this is the camera in most cases
+    [SerializeField] private Transform _cameraPivot;
+    private Vector3 _xzAbsoluteForward;
 
     private Vector3 _movement; //movement input
     private Vector3 _velocity = Vector3.zero; // [m/s]
@@ -16,6 +18,8 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     private float _mass = 80; // [kg[
     private float _accelerationJogging = 1.5f; // [m/s²]
     private float _accelerationSprinting = 3;// [m/s²]
+    private float _rotationSpeed = 8;
+
 
     private bool IsSprinting;
 
@@ -28,13 +32,13 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         Assert.IsNotNull(_charCTRL, "Dependency Error: This component needs a CharachterController to work.");
         Assert.IsNotNull(_absoluteForward, "Dependency Error: Set the Absolute Forward field.");
 #endif
+
     }
 
     void Update ()
     {
         //get input
         _movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-
         Debug.Log(IsSprinting);
 
         //check if player is sprinting
@@ -43,7 +47,6 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 	}
     private void FixedUpdate()
     {
-
         ApplyGravity();
 
         //move
@@ -64,10 +67,9 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         if (_charCTRL.isGrounded)
         {
             //take x and z components from the absolute forward
-            Vector3 xzAbsoluteForward = new Vector3(_absoluteForward.forward.x, 0, _absoluteForward.forward.z);
-
+            _xzAbsoluteForward = new Vector3(_absoluteForward.forward.x, 0, _absoluteForward.forward.z);
             //set direction in which the player looks
-            Quaternion forwardRotation = Quaternion.LookRotation(xzAbsoluteForward, Vector3.up);
+            Quaternion forwardRotation = Quaternion.LookRotation(_xzAbsoluteForward, Vector3.up);
 
             //set actual movement direction
             Vector3 finalMovement = forwardRotation * _movement;
@@ -90,5 +92,9 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         {
             IsSprinting = false;
         }
+    }
+    public void Turn(Quaternion target)
+    {
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, _rotationSpeed * Time.fixedDeltaTime);
     }
 }
