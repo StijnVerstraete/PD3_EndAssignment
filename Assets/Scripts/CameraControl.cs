@@ -41,7 +41,7 @@ public class CameraControl : MonoBehaviour
     }
     private void SetCharacterTurnTarget()
     {
-        if (Input.GetAxis("Vertical") > 0.5)
+        if (Input.GetAxis("Vertical") > 0.25f)
         {
             _charCTRLBehavior.Turn(Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0)));
         }

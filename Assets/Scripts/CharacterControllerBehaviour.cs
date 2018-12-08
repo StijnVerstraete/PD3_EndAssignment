@@ -13,15 +13,16 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     private Vector3 _xzAbsoluteForward;
 
     private Vector3 _movement; //movement input
-    private Vector3 _velocity = Vector3.zero; // [m/s]
+    public Vector3 Velocity = Vector3.zero; // [m/s]
 
     private float _mass = 80; // [kg[
     private float _accelerationJogging = 1.5f; // [m/s²]
     private float _accelerationSprinting = 3;// [m/s²]
     private float _rotationSpeed = 8;
 
-
     private bool IsSprinting;
+
+    private Vector3 _finalMovement;
 
 
     void Start ()
@@ -51,14 +52,14 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 
         //move
         ApplyMovement();
-        _charCTRL.Move(_velocity * Time.fixedDeltaTime);
+        _charCTRL.Move(Velocity * Time.fixedDeltaTime);
     }
     private void ApplyGravity()
     {
         //apply gravity when the characterController is not grounded
         if (!_charCTRL.isGrounded)
         {
-            _velocity += Physics.gravity * Time.deltaTime; //g[m / s²] * t[s]
+            Velocity += Physics.gravity * Time.deltaTime; //g[m / s²] * t[s]
         }
     }
     private void ApplyMovement()
@@ -72,13 +73,13 @@ public class CharacterControllerBehaviour : MonoBehaviour {
             Quaternion forwardRotation = Quaternion.LookRotation(_xzAbsoluteForward, Vector3.up);
 
             //set actual movement direction
-            Vector3 finalMovement = forwardRotation * _movement;
+            _finalMovement = forwardRotation * _movement;
 
             //move (acceleration depending on jogging or sprinting
             if (!IsSprinting)
-                _velocity = finalMovement * (_mass * _accelerationJogging) * Time.fixedDeltaTime; // F = m.a [m/s²] * t [s]
+                Velocity = _finalMovement * (_mass * _accelerationJogging) * Time.fixedDeltaTime; // F = m.a [m/s²] * t [s]
             else if (IsSprinting)
-                _velocity = finalMovement * (_mass * _accelerationSprinting) * Time.fixedDeltaTime; // F = m.a [m/s²] * t [s)]
+                Velocity = _finalMovement * (_mass * _accelerationSprinting) * Time.fixedDeltaTime; // F = m.a [m/s²] * t [s)]
         }
          
     }
