@@ -20,9 +20,10 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     private float _accelerationSprinting = 3;// [m/s²]
     private float _rotationSpeed = 8;
 
-    private bool IsSprinting;
+    public bool IsSprinting;
+    public bool IsHanging;
 
-    private Vector3 _finalMovement;
+    [SerializeField] private Vector3 _finalMovement;
 
 
     void Start ()
@@ -40,7 +41,7 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     {
         //get input
         _movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        Debug.Log(IsSprinting);
+        Debug.Log(_charCTRL.isGrounded);
 
         //check if player is sprinting
         SprintInput();
@@ -48,6 +49,8 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 	}
     private void FixedUpdate()
     {
+        
+        ApplyGround();
         ApplyGravity();
 
         //move
@@ -56,10 +59,15 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     }
     private void ApplyGravity()
     {
-        //apply gravity when the characterController is not grounded
-        if (!_charCTRL.isGrounded)
+        //apply gravity
+        Velocity += Physics.gravity * Time.fixedDeltaTime; //g[m / s²] * t[s]
+    }
+    private void ApplyGround()
+    {
+        if (_charCTRL.isGrounded)
         {
-            Velocity += Physics.gravity * Time.deltaTime; //g[m / s²] * t[s]
+            //ground velocity
+            Velocity -= Vector3.Project(Velocity, Physics.gravity.normalized);
         }
     }
     private void ApplyMovement()
@@ -68,13 +76,13 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         if (_charCTRL.isGrounded)
         {
             //take x and z components from the absolute forward
-            _xzAbsoluteForward = new Vector3(_absoluteForward.forward.x, 0, _absoluteForward.forward.z);
+            _xzAbsoluteForward = Vector3.Scale(_absoluteForward.forward,new Vector3(1,0,1));
             //set direction in which the player looks
             Quaternion forwardRotation = Quaternion.LookRotation(_xzAbsoluteForward, Vector3.up);
 
             //set actual movement direction
             _finalMovement = forwardRotation * _movement;
-
+            _finalMovement.y = Velocity.y;
             //move (acceleration depending on jogging or sprinting
             if (!IsSprinting)
                 Velocity = _finalMovement * (_mass * _accelerationJogging) * Time.fixedDeltaTime; // F = m.a [m/s²] * t [s]
