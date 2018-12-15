@@ -7,12 +7,13 @@ public class Animations : MonoBehaviour {
     [SerializeField] private Animator _animator;
     [SerializeField] CharacterControllerBehaviour _characterControlScript;
     [SerializeField] private GameObject _player;
+
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         //adjust velocity to use in animation
         Vector3 XZvel = Vector3.Scale(_characterControlScript.Velocity, new Vector3(1, 0, 1));

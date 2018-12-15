@@ -22,8 +22,11 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 
     public bool IsSprinting;
     public bool IsHanging;
+    public bool IsClimbing;
 
     [SerializeField] private Vector3 _finalMovement;
+
+    public Vector3 CurrentHangLocation;
 
 
     void Start ()
@@ -46,7 +49,9 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         //check if player is sprinting
         SprintInput();
 
-	}
+        ApplyHanging();
+
+    }
     private void FixedUpdate()
     {
         
@@ -73,7 +78,7 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     private void ApplyMovement()
     {
         //only apply movement when character is on the ground
-        if (_charCTRL.isGrounded)
+        if (_charCTRL.isGrounded && !IsHanging && !IsClimbing)
         {
             //take x and z components from the absolute forward
             _xzAbsoluteForward = Vector3.Scale(_absoluteForward.forward,new Vector3(1,0,1));
@@ -100,6 +105,24 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         else if (Input.GetAxis("Sprint") <= 0)
         {
             IsSprinting = false;
+        }
+    }
+    private void ApplyHanging()
+    {
+        if (IsHanging)
+        {
+            _charCTRL.enabled = false;
+            if (Input.GetAxis("Vertical") > 0.5f)
+            {
+                IsHanging = false;
+                IsClimbing = true;
+            }
+        }
+        else if (IsClimbing && transform.position.y != CurrentHangLocation.y)
+        {
+            transform.position = new Vector3(transform.position.x, CurrentHangLocation.y, transform.position.z);
+            _charCTRL.enabled = true;
+            IsClimbing = false;
         }
     }
     public void Turn(Quaternion target)
