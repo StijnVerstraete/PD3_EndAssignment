@@ -34,13 +34,13 @@ public class LedgeJump : MonoBehaviour {
     {
         #region offsetvalues
         //tweak offset values based on character model
-        float yOffset = 0.14f;
-        float xzOffset = 0.4f;
+        float yOffset = 0.5f;
+        float xzOffset = 0.2f;
         #endregion offsetvalues
         if (forwardWall.x != 0)
         {
             //- (2 * forwardWall.x)
-            _player.transform.position = new Vector3(col.transform.position.x , col.transform.position.y - yOffset, col.transform.position.z  /**-Mathf.Sign(col.transform.TransformDirection(Vector3.right).z)*/ - xzOffset);
+            _player.transform.position = new Vector3(col.transform.position.x , col.transform.position.y + yOffset, col.transform.position.z  /**-Mathf.Sign(col.transform.TransformDirection(Vector3.right).z)*/ - xzOffset);
         }
         else if (forwardWall.z != 0)
         {
@@ -49,6 +49,8 @@ public class LedgeJump : MonoBehaviour {
         }
         //set correct rotation (NOT WORKING, STILL NEEDS FIX)
         _player.transform.rotation = col.transform.localRotation;
+
+
         _characterControlScript.CurrentHangLocation = gameObject.transform.position; 
 
     }

@@ -37,7 +37,6 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         Assert.IsNotNull(_charCTRL, "Dependency Error: This component needs a CharachterController to work.");
         Assert.IsNotNull(_absoluteForward, "Dependency Error: Set the Absolute Forward field.");
 #endif
-
     }
 
     void Update ()
@@ -53,11 +52,12 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 
     }
     private void FixedUpdate()
-    {
-        
-        ApplyGround();
-        ApplyGravity();
-
+    {  
+        if (!IsClimbing && !IsHanging)
+        {
+            ApplyGround();
+            ApplyGravity();
+        }
         //move
         ApplyMovement();
         _charCTRL.Move(Velocity * Time.fixedDeltaTime);
@@ -118,15 +118,16 @@ public class CharacterControllerBehaviour : MonoBehaviour {
                 IsClimbing = true;
             }
         }
-        else if (IsClimbing && transform.position.y != CurrentHangLocation.y)
-        {
-            transform.position = new Vector3(transform.position.x, CurrentHangLocation.y, transform.position.z);
-            _charCTRL.enabled = true;
-            IsClimbing = false;
-        }
     }
     public void Turn(Quaternion target)
     {
         transform.rotation = Quaternion.Slerp(transform.rotation, target, _rotationSpeed * Time.fixedDeltaTime);
+    }
+    public void FinishClimbing()
+    {
+        IsClimbing = false;
+        transform.position = new Vector3(transform.position.x, CurrentHangLocation.y, transform.position.z);
+        _charCTRL.enabled = true;
+        Debug.Log("EventTrigger");
     }
 }

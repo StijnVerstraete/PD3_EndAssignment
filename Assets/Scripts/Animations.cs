@@ -37,5 +37,8 @@ public class Animations : MonoBehaviour {
 
         //hanging
         _animator.SetBool("IsHanging", _characterControlScript.IsHanging);
+
+        //climbing
+        _animator.SetBool("IsClimbing", _characterControlScript.IsClimbing);
     }
 }
