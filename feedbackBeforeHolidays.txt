@@ -1,0 +1,25 @@
+HACKNPLAN:
+
+hacknplan herbekijken
+subtasks
+smaller tasks
+tasks opsplitsen
+Add learning moment
+Oplossingen documenteren
+
+
+
+DOCUMENT
+
+Make AI graph a proper behavior tree
+AI accuraatheid zin bekijken
+Flowchart eventueel meer uittekenen (bij extra uitleg flowchart)
+Zetten dat alles op een grid (muren/ledges)
+
+
+CODE
+
+Getsetters ipv publics
+Collision layers ipv tags (ledges)
+Geen floating points vergelijken met 0 (math.Approximatly)
+

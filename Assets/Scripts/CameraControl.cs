@@ -17,9 +17,8 @@ public class CameraControl : MonoBehaviour
     private RaycastHit _hit;
 
     private float _yRotation;
-    void Start()
-    {
-    }
+
+    private float _turnTreshold = 0.25f;
 
     // Update is called once per frame
     void Update()
@@ -38,10 +37,16 @@ public class CameraControl : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(_character.transform.position.x, _character.transform.position.y + 1f, _character.transform.position.z), Time.deltaTime * _cameraSensitivity);
 
         SetCharacterTurnTarget();
+
+        //change turn treshold
+        if (_charCTRLBehavior.IsAiming)
+            _turnTreshold = 0f;
+        else
+            _turnTreshold = 0.25f;
     }
     private void SetCharacterTurnTarget()
     {
-        if (Input.GetAxis("Vertical") > 0.25f && _charCTRLBehavior.IsHanging == false)
+        if (Input.GetAxis("Vertical") >= _turnTreshold && !_charCTRLBehavior.IsHanging && !_charCTRLBehavior.IsClimbing && !_charCTRLBehavior.IsPushing)
         {
             _charCTRLBehavior.Turn(Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0)));
         }

@@ -27,6 +27,9 @@ public class LedgeJump : MonoBehaviour {
 
                 //set player to correct position
                 CalculateSnappingPoint(other.gameObject.transform.forward, other);
+
+                //set y velocity to 0
+                _characterControlScript.Velocity.y = 0;
             }
         }   
     }
@@ -40,15 +43,16 @@ public class LedgeJump : MonoBehaviour {
         if (forwardWall.x != 0)
         {
             //- (2 * forwardWall.x)
-            _player.transform.position = new Vector3(col.transform.position.x , col.transform.position.y + yOffset, col.transform.position.z  /**-Mathf.Sign(col.transform.TransformDirection(Vector3.right).z)*/ - xzOffset);
+            _player.transform.position = new Vector3(col.transform.position.x , col.gameObject.transform.position.y + yOffset, col.transform.position.z  - xzOffset);
         }
         else if (forwardWall.z != 0)
         {
             //- (2 * forwardWall.z
-            _player.transform.position = new Vector3(col.transform.position.x  /**-Mathf.Sign(col.transform.TransformDirection(Vector3.right).x)*/ - xzOffset, col.transform.position.y - yOffset, col.transform.position.z);
+            _player.transform.position = new Vector3(col.transform.position.x - xzOffset, col.gameObject.transform.position.y - yOffset, col.transform.position.z);
         }
-        //set correct rotation (NOT WORKING, STILL NEEDS FIX)
-        _player.transform.rotation = col.transform.localRotation;
+        //set correct rotation
+        Vector3 newRot = new Vector3(_player.transform.eulerAngles.x, transform.eulerAngles.y, _player.transform.eulerAngles.z);
+        _player.transform.rotation = Quaternion.Euler(newRot);
 
 
         _characterControlScript.CurrentHangLocation = gameObject.transform.position; 

@@ -8,10 +8,6 @@ public class Animations : MonoBehaviour {
     [SerializeField] CharacterControllerBehaviour _characterControlScript;
     [SerializeField] private GameObject _player;
 
-	void Start () {
-		
-	}
-
     // Update is called once per frame
     void Update()
     {
@@ -20,7 +16,7 @@ public class Animations : MonoBehaviour {
         Vector3 localVelXZ = _characterControlScript.gameObject.transform.InverseTransformDirection(XZvel);
         localVelXZ.Normalize();
 
-        if (!_characterControlScript.IsSprinting)
+        if (!_characterControlScript.IsSprinting && !_characterControlScript.IsAiming)
         {
             //divide by 2 when not sprinting, to limit animation on blend tree
             _animator.SetFloat("HorizontalVelocity", localVelXZ.x / 2);
@@ -40,5 +36,14 @@ public class Animations : MonoBehaviour {
 
         //climbing
         _animator.SetBool("IsClimbing", _characterControlScript.IsClimbing);
+
+        //pushing
+        _animator.SetBool("IsPushing", _characterControlScript.IsPushing);
+
+        //picking up
+        _animator.SetBool("IsPickingUp", _characterControlScript.IsPickingUp);
+
+        //aiming
+        _animator.SetBool("IsAiming", _characterControlScript.IsAiming);
     }
 }

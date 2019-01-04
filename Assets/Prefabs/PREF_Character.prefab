@@ -803,6 +803,7 @@ GameObject:
   - component: {fileID: 114527455384511456}
   - component: {fileID: 143570126048489852}
   - component: {fileID: 114040666047580534}
+  - component: {fileID: 114893190648830546}
   - component: {fileID: 95755632895062346}
   m_Layer: 0
   m_Name: PREF_Character
@@ -2158,8 +2159,23 @@ MonoBehaviour:
   IsSprinting: 0
   IsHanging: 0
   IsClimbing: 0
+  IsPushing: 0
   _finalMovement: {x: 0, y: 0, z: 0}
   CurrentHangLocation: {x: 0, y: 0, z: 0}
+--- !u!114 &114893190648830546
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1787070821581584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8deb7998ded8ef4e8fc2678ff9964cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _ikActive: 0
+  _rightHandPosition: {fileID: 0}
+  _anim: {fileID: 0}
 --- !u!137 &137045568086638058
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -357,3 +357,35 @@ InputManager:
     type: 0
     axis: 0
     joyNum: 1
+  - serializedVersion: 3
+    m_Name: RightJoystickClick
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: joystick 1 button 9
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 3
+    dead: 0.2
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 0
+    axis: 0
+    joyNum: 9
+  - serializedVersion: 3
+    m_Name: Shoot
+    descriptiveName: 
+    descriptiveNegativeName: 
+    negativeButton: 
+    positiveButton: 
+    altNegativeButton: 
+    altPositiveButton: 
+    gravity: 0
+    dead: 0.5
+    sensitivity: 1
+    snap: 0
+    invert: 0
+    type: 2
+    axis: 9
+    joyNum: 0
