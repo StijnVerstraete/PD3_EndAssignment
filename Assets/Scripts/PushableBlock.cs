@@ -12,14 +12,6 @@ public class PushableBlock : MonoBehaviour {
         {
             _delayTimer--;
         }
-        //quit pushing (in update to avoid collider issues
-        if (Input.GetAxis("AButton") != 0 && _delayTimer <= 0 && _player.GetComponent<CharacterControllerBehaviour>().IsPushing)
-        {
-            _player.GetComponent<CharacterControllerBehaviour>().IsPushing = false;
-            _delayTimer = 30;
-
-            GetComponent<Rigidbody>().isKinematic = true;
-        }
         ApplyForce();
         //apply force if pushing
         if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing)
@@ -44,7 +36,7 @@ public class PushableBlock : MonoBehaviour {
                     GetComponent<Rigidbody>().isKinematic = false;
                 }
                //set timer to avoid multiple button presses in short succession
-                _delayTimer = 30;
+                _delayTimer = 60;
             }
         }
     }
@@ -81,10 +73,10 @@ public class PushableBlock : MonoBehaviour {
     }
     private void ApplyForce()
     {
-        if (Input.GetAxis("Vertical") != 0)
+        if (Input.GetAxis("Vertical") > 0)
         {
             int forceToApply = 5;
-            Vector3 force = new Vector3(_player.transform.forward.x* forceToApply, 0,_player.transform.forward.z* forceToApply);
+            Vector3 force = new Vector3(transform.forward.x * forceToApply, 0,transform.forward.z * forceToApply);
             GetComponent<Rigidbody>().AddForce(force);
         }
     }

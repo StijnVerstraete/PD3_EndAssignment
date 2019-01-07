@@ -7,48 +7,43 @@ public class LedgeJump : MonoBehaviour {
     [SerializeField] private CharacterControllerBehaviour _characterControlScript;
     [SerializeField] private GameObject _player;
 
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Player")
         {
             if (Input.GetAxis("AButton") != 0)
             {
+                //set player to correct position
+                CalculateSnappingPoint(gameObject.transform.forward, gameObject.transform.position);
+
                 //disable components to avoid conflict
                 _characterControlScript.IsHanging = true;
-
-                //set player to correct position
-                CalculateSnappingPoint(other.gameObject.transform.forward, other);
 
                 //set y velocity to 0
                 _characterControlScript.Velocity.y = 0;
             }
         }   
     }
-    private void CalculateSnappingPoint(Vector3 forwardWall, Collider col)
+    private void CalculateSnappingPoint(Vector3 forwardWall, Vector3 col)
     {
         #region offsetvalues
         //tweak offset values based on character model
-        float yOffset = 0.5f;
-        float xzOffset = 0.2f;
+        float yOffset = 1.55f;
+        float xzOffset = 0.25f;
         #endregion offsetvalues
-        if (forwardWall.x != 0)
+        if (forwardWall.x < 0)
         {
             //- (2 * forwardWall.x)
-            _player.transform.position = new Vector3(col.transform.position.x , col.gameObject.transform.position.y + yOffset, col.transform.position.z  - xzOffset);
+
+            _player.transform.position = new Vector3(_player.transform.position.x - xzOffset, col.y - yOffset, col.z);
+            Debug.Log("X");
         }
-        else if (forwardWall.z != 0)
+        else if (forwardWall.z < 0)
         {
             //- (2 * forwardWall.z
-            _player.transform.position = new Vector3(col.transform.position.x - xzOffset, col.gameObject.transform.position.y - yOffset, col.transform.position.z);
+ 
+            _player.transform.position = new Vector3(col.x, col.y - yOffset, _player.transform.position.z - xzOffset);
+            Debug.Log("Z");
         }
         //set correct rotation
         Vector3 newRot = new Vector3(_player.transform.eulerAngles.x, transform.eulerAngles.y, _player.transform.eulerAngles.z);
