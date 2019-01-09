@@ -20,5 +20,7 @@ public class AIAnimations : MonoBehaviour {
         _animator.SetFloat("HorizontalVelocity", localVelXZ.x );
         _animator.SetFloat("VerticalVelocity", localVelXZ.z );
 
+        //check if AI is aiming
+        _animator.SetBool("IsAiming", _aiScript.IsAiming);
     }
 }
