@@ -8,6 +8,7 @@ TagManager:
   - LedgeTrigger
   - Jumppad
   - Cover
+  - Enemy
   layers:
   - Default
   - TransparentFX

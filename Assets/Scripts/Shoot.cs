@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour {
 
-    [SerializeField] private GameObject _bullet;
-    [SerializeField] private GameObject _gunBarrel;
 
     [SerializeField] private CharacterControllerBehaviour _charCTRL;
 
@@ -23,23 +21,25 @@ public class Shoot : MonoBehaviour {
 
     void Update ()
     {
-        _screenCentre = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        _screenCentre = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Input.GetAxis("Shoot")>0.1f && _charCTRL.IsAiming && _canShoot)
         {
             if (Physics.Raycast(_screenCentre, out _hit,250, _layerMask))
             {
-                _lastBulletFired = Instantiate(_bullet, _gunBarrel.transform.position, _gunBarrel.transform.rotation);
-                _lastBulletFired.GetComponent<Bullet>().SetTarget(_hit.point);
+                Debug.DrawRay(_screenCentre.origin, _screenCentre.direction, Color.cyan, 1);
                 Debug.Log("Shoot");
                 _muzzleFlash.SetActive(true);
                 _canShoot = false;
                 _flashDuration = 5;
+                if (_hit.collider.gameObject.tag == "Enemy")
+                {
+                    Debug.Log("EnemyHit");
+                }
             }
-        }
-        
+        }   
         if (Input.GetAxis("Shoot") == 0f)
             _canShoot = true;
-        Debug.DrawRay(_screenCentre.origin, _screenCentre.direction);
+
 
         //make flash go away
         _flashDuration--;

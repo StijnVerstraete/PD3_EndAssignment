@@ -20,6 +20,7 @@ public class AIBehaviour : MonoBehaviour {
 
     private float _shootDelay = 1.5f;
     private float _shootDelayLength;
+    private float _chanceToHit = 40f; //percentage
 
     [SerializeField] private List<GameObject> _potentialCovers = new List<GameObject>();
     private float _maxIdleDistance = 4f;
@@ -30,6 +31,7 @@ public class AIBehaviour : MonoBehaviour {
     private bool _inCover = false;
 
     [SerializeField] private LayerMask _layerMask;
+    [SerializeField] private GameObject _gunBarrel;
 
     float _shortestDistanceToCover = 10000;
     GameObject _nearestCover;
@@ -136,8 +138,6 @@ public class AIBehaviour : MonoBehaviour {
             _muzzleFlash.SetActive(true);
             FireBullet();
         }
-        
-
         yield return NodeResult.Success;
     }
     IEnumerator<NodeResult> Idle()
@@ -205,6 +205,17 @@ public class AIBehaviour : MonoBehaviour {
     }
     private void FireBullet()
     {
-        Debug.Log("FireBullet");
+        RaycastHit bulletHit;
+        if (Physics.Linecast(_gunBarrel.transform.position,new Vector3(_player.transform.position.x,_player.transform.position.y + 1.2f,_player.transform.position.z),out bulletHit))
+        {
+            Debug.DrawLine(_gunBarrel.transform.position, new Vector3(_player.transform.position.x, _player.transform.position.y + 1.2f, _player.transform.position.z), Color.green, 1);
+            //instantiate bullet
+            //set bullet target depending on chance to hit
+            if (_chanceToHit <= Random.Range(0,100))
+            {
+                Debug.Log("PlayerHit");
+            }
+            Debug.Log("AIShoots");
+        }
     }
 }
