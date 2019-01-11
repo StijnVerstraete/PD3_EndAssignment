@@ -22,5 +22,8 @@ public class AIAnimations : MonoBehaviour {
 
         //check if AI is aiming
         _animator.SetBool("IsAiming", _aiScript.IsAiming);
+
+        //check if AI is dead
+        _animator.SetBool("IsDead", _aiScript.IsDead);
     }
 }

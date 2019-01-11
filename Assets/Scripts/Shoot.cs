@@ -33,13 +33,17 @@ public class Shoot : MonoBehaviour {
                 _flashDuration = 5;
                 if (_hit.collider.gameObject.tag == "Enemy")
                 {
-                    Debug.Log("EnemyHit");
+                    _hit.collider.gameObject.GetComponent<AIBehaviour>().Health -= 1;
+                    //play hit animation
+                    if (_hit.collider.gameObject.GetComponent<AIBehaviour>().Health > 0 )
+                    {
+                        _hit.collider.gameObject.GetComponent<Animator>().SetTrigger("IsHit");
+                    }
                 }
             }
         }   
         if (Input.GetAxis("Shoot") == 0f)
             _canShoot = true;
-
 
         //make flash go away
         _flashDuration--;

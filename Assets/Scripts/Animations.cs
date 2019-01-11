@@ -45,5 +45,8 @@ public class Animations : MonoBehaviour {
 
         //aiming
         _animator.SetBool("IsAiming", _characterControlScript.IsAiming);
+
+        //dying
+        _animator.SetBool("IsDead", _characterControlScript.IsDead);
     }
 }

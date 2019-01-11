@@ -22,6 +22,9 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     private float _accelerationAiming = 0.75f;// [m/s²]
     private float _rotationSpeed = 8;
 
+    public int Health = 5;
+
+    public bool IsDead = false;
     public bool IsSprinting;
     public bool IsHanging;
     public bool IsClimbing;
@@ -58,6 +61,13 @@ public class CharacterControllerBehaviour : MonoBehaviour {
 
         ApplyHanging();
 
+        //die if health is too low
+        if (Health <= 0)
+        {
+            IsDead = true;
+            GetComponent<CharacterControllerBehaviour>().enabled = false;
+        }
+
     }
     private void FixedUpdate()
     {  
@@ -68,8 +78,7 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         }
         //move
         if (_charCTRL.enabled)
-        {
-            
+        {      
             ApplyMovement();
             PushState();
             _charCTRL.Move(Velocity * Time.fixedDeltaTime);

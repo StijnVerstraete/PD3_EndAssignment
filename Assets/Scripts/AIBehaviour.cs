@@ -25,7 +25,6 @@ public class AIBehaviour : MonoBehaviour {
     [SerializeField] private List<GameObject> _potentialCovers = new List<GameObject>();
     private float _maxIdleDistance = 4f;
 
-
     private bool _playerInTrigger = false;
 
     private bool _inCover = false;
@@ -37,7 +36,10 @@ public class AIBehaviour : MonoBehaviour {
     GameObject _nearestCover;
     RaycastHit _hit;
 
+    public int Health = 3;
+
     public bool IsAiming;
+    public bool IsDead = false;
 
     public bool IsCrouching = false;
 
@@ -66,11 +68,18 @@ public class AIBehaviour : MonoBehaviour {
         {
             _muzzleFlash.SetActive(false);
         }
+        //die if health is too low
+        if (Health <=0)
+        {
+            IsDead = true;
+            _agent.enabled = false;
+            gameObject.GetComponent<CapsuleCollider>().enabled = false;
+        }
     }
     #region BehaviourTreeFunctions
     IEnumerator RunTree()
     {
-        while (Application.isPlaying)
+        while (Application.isPlaying && !IsDead)
         {
             yield return _rootNode.Tick();
         }
@@ -213,9 +222,15 @@ public class AIBehaviour : MonoBehaviour {
             //set bullet target depending on chance to hit
             if (_chanceToHit <= Random.Range(0,100))
             {
-                Debug.Log("PlayerHit");
+                _player.GetComponent<CharacterControllerBehaviour>().Health -= 1;
+                //play hit animation
+                if (_player.GetComponent<CharacterControllerBehaviour>().Health > 0)
+                {
+                    _player.GetComponent<Animator>().SetTrigger("IsHit");
+                }
             }
             Debug.Log("AIShoots");
         }
     }
+
 }
