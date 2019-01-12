@@ -20,7 +20,7 @@ public class AIBehaviour : MonoBehaviour {
 
     private float _shootDelay = 1.5f;
     private float _shootDelayLength;
-    private float _chanceToHit = 40f; //percentage
+    private float _chanceToHit = 20; //percentage
 
     [SerializeField] private List<GameObject> _potentialCovers = new List<GameObject>();
     private float _maxIdleDistance = 4f;
@@ -220,7 +220,7 @@ public class AIBehaviour : MonoBehaviour {
             Debug.DrawLine(_gunBarrel.transform.position, new Vector3(_player.transform.position.x, _player.transform.position.y + 1.2f, _player.transform.position.z), Color.green, 1);
             //instantiate bullet
             //set bullet target depending on chance to hit
-            if (_chanceToHit <= Random.Range(0,100))
+            if (_chanceToHit <= Random.Range(0,100) && bulletHit.collider.gameObject.tag == "Player")
             {
                 _player.GetComponent<CharacterControllerBehaviour>().Health -= 1;
                 //play hit animation

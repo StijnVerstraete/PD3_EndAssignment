@@ -65,6 +65,7 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         if (Health <= 0)
         {
             IsDead = true;
+            IsAiming = false;
             GetComponent<CharacterControllerBehaviour>().enabled = false;
         }
 

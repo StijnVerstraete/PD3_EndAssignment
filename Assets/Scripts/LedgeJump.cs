@@ -34,15 +34,15 @@ public class LedgeJump : MonoBehaviour {
         if (forwardWall.x < 0)
         {
             //- (2 * forwardWall.x)
+            _player.transform.position = new Vector3(col.x, col.y - yOffset, _player.transform.position.z - xzOffset);
 
-            _player.transform.position = new Vector3(_player.transform.position.x - xzOffset, col.y - yOffset, col.z);
             Debug.Log("X");
         }
         else if (forwardWall.z < 0)
         {
             //- (2 * forwardWall.z
- 
-            _player.transform.position = new Vector3(col.x, col.y - yOffset, _player.transform.position.z - xzOffset);
+            _player.transform.position = new Vector3(_player.transform.position.x - xzOffset, col.y - yOffset, col.z);
+            
             Debug.Log("Z");
         }
         //set correct rotation
