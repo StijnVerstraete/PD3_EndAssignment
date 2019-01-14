@@ -6,12 +6,37 @@ public class PushableBlock : MonoBehaviour {
 
     [SerializeField] private GameObject _player;
     private float _delayTimer;
-    private void FixedUpdate()
+    private float _colliderEnableDelay;
+    private void Update()
     {
+        //check if over the edge
+        if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing)
+        {
+            if (!Physics.Raycast(transform.GetChild(0).transform.position, Vector3.down, 1f))
+            {
+                Debug.Log("Release");
+                _player.GetComponent<CharacterControllerBehaviour>().IsPushing = false;
+                _colliderEnableDelay = 2;
+            }
+        }
+
         if (_delayTimer > 0)
         {
             _delayTimer--;
         }
+        //enable collider
+        if (_colliderEnableDelay > 0)
+        {
+            _colliderEnableDelay--;
+        }
+        else if (_colliderEnableDelay <= 0)
+        {
+            _player.GetComponent<CapsuleCollider>().enabled = true;
+        }
+    }
+    private void FixedUpdate()
+    {
+
         //apply force if pushing
         if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing)
         {
@@ -31,8 +56,6 @@ public class PushableBlock : MonoBehaviour {
                     CalculateSnappingPoint(other.gameObject.transform.forward, other.transform.position);
                     Debug.Log("check");
                     _player.GetComponent<CharacterControllerBehaviour>().IsPushing = true;
-
-                     GetComponent<Rigidbody>().isKinematic = false;
                     //disable collider
                     _player.GetComponent<CapsuleCollider>().enabled = false;
                 }
@@ -46,11 +69,7 @@ public class PushableBlock : MonoBehaviour {
         if (other.tag == "Player")
         {
             _player.GetComponent<CharacterControllerBehaviour>().IsPushing = false;
-
-            GetComponent<Rigidbody>().isKinematic = true;
-
-            //enable collider
-            _player.GetComponent<CapsuleCollider>().enabled = false;
+            _colliderEnableDelay = 2;
         }
     }
     private void CalculateSnappingPoint(Vector3 forwardWall, Vector3 col)
@@ -78,10 +97,11 @@ public class PushableBlock : MonoBehaviour {
     }
     private void ApplyForce()
     {
-        float forceToApply = 12;
+        float forceToApply = 10;
+
         if (Input.GetAxis("Vertical") > 0)
         {
-            GetComponent<Rigidbody>().AddForce(_player.transform.forward * forceToApply,ForceMode.Force);
+            GetComponent<Rigidbody>().AddForce(_player.transform.forward* forceToApply,ForceMode.Acceleration);
         }
     }
 

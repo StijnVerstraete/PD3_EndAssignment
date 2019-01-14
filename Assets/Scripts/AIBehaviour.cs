@@ -20,10 +20,10 @@ public class AIBehaviour : MonoBehaviour {
 
     private float _shootDelay = 1.5f;
     private float _shootDelayLength;
-    private float _chanceToHit = 20; //percentage
+    private float _chanceToHit = 5; //percentage
 
     [SerializeField] private List<GameObject> _potentialCovers = new List<GameObject>();
-    private float _maxIdleDistance = 4f;
+    private float _maxIdleDistance = 10f;
 
     private bool _playerInTrigger = false;
 
@@ -39,6 +39,8 @@ public class AIBehaviour : MonoBehaviour {
     public int Health = 3;
 
     public bool IsAiming;
+    public bool IsFalling;
+    public bool IsSearching;
     public bool IsDead = false;
 
     public bool IsCrouching = false;
@@ -75,6 +77,8 @@ public class AIBehaviour : MonoBehaviour {
             _agent.enabled = false;
             gameObject.GetComponent<CapsuleCollider>().enabled = false;
         }
+        //check if falling
+        CheckFalling();
     }
     #region BehaviourTreeFunctions
     IEnumerator RunTree()
@@ -118,6 +122,7 @@ public class AIBehaviour : MonoBehaviour {
             }
             else
             {
+                IsSearching = false;
                 _inCover = true;
             }
             Debug.DrawRay(transform.position, transform.forward, Color.red, 10);
@@ -131,6 +136,7 @@ public class AIBehaviour : MonoBehaviour {
     }
     IEnumerator<NodeResult> SearchCover()
     {
+        IsSearching = true;
         FindNewCover();
         
         yield return NodeResult.Failure;
@@ -220,7 +226,7 @@ public class AIBehaviour : MonoBehaviour {
             Debug.DrawLine(_gunBarrel.transform.position, new Vector3(_player.transform.position.x, _player.transform.position.y + 1.2f, _player.transform.position.z), Color.green, 1);
             //instantiate bullet
             //set bullet target depending on chance to hit
-            if (_chanceToHit <= Random.Range(0,100) && bulletHit.collider.gameObject.tag == "Player")
+            if (_chanceToHit >= Random.Range(0,100) && bulletHit.collider.gameObject.tag == "Player")
             {
                 _player.GetComponent<CharacterControllerBehaviour>().Health -= 1;
                 //play hit animation
@@ -230,6 +236,17 @@ public class AIBehaviour : MonoBehaviour {
                 }
             }
             Debug.Log("AIShoots");
+        }
+    }
+    private void CheckFalling()
+    {
+        if (Physics.Raycast(transform.position,Vector3.down,2f))
+        {
+            IsFalling = false;
+        }
+        else
+        {
+            IsFalling = true;
         }
     }
 

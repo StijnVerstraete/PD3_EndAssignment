@@ -25,5 +25,11 @@ public class AIAnimations : MonoBehaviour {
 
         //check if AI is dead
         _animator.SetBool("IsDead", _aiScript.IsDead);
+
+        //check if AI is searching for cover
+        _animator.SetBool("IsSearching", _aiScript.IsSearching);
+
+        //check if AI is grounded
+        _animator.SetBool("IsFalling", _aiScript.IsFalling);
     }
 }
