@@ -163,8 +163,10 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         if (IsPushing)
         {
             //avoid walking sideways while pushing
-            Velocity = Vector3.Scale(Velocity, transform.forward);
-            //avoid walking backwards while pushing
+            if (transform.forward.x > 0 || transform.forward.z > 0)
+                Velocity = Vector3.Scale(Velocity, transform.forward);
+            else if (transform.forward.x < 0 || transform.forward.z < 0)
+                Velocity = Vector3.Scale(Velocity, -transform.forward);
 
         }
     }

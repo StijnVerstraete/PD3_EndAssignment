@@ -6,17 +6,16 @@ public class PushableBlock : MonoBehaviour {
 
     [SerializeField] private GameObject _player;
     private float _delayTimer;
-    private void Update()
+    private void FixedUpdate()
     {
         if (_delayTimer > 0)
         {
             _delayTimer--;
         }
-        ApplyForce();
         //apply force if pushing
         if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing)
         {
-            ApplyForce();
+           ApplyForce();
         }
 
     }
@@ -29,11 +28,11 @@ public class PushableBlock : MonoBehaviour {
             {
                 if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing == false)
                 {
-                    CalculateSnappingPoint(other.gameObject.transform.forward, other);
+                    CalculateSnappingPoint(other.gameObject.transform.forward, other.transform.position);
                     Debug.Log("check");
                     _player.GetComponent<CharacterControllerBehaviour>().IsPushing = true;
 
-                    GetComponent<Rigidbody>().isKinematic = false;
+                     GetComponent<Rigidbody>().isKinematic = false;
                 }
                //set timer to avoid multiple button presses in short succession
                 _delayTimer = 60;
@@ -49,7 +48,7 @@ public class PushableBlock : MonoBehaviour {
             GetComponent<Rigidbody>().isKinematic = true;
         }
     }
-    private void CalculateSnappingPoint(Vector3 forwardWall, Collider col)
+    private void CalculateSnappingPoint(Vector3 forwardWall, Vector3 col)
     {
         #region offsetvalues
         //tweak offset values based on character model
@@ -58,12 +57,16 @@ public class PushableBlock : MonoBehaviour {
         if (forwardWall.x != 0)
         {
             //- (2 * forwardWall.x)
-            _player.transform.position = new Vector3(col.gameObject.transform.position.x - xzOffset, _player.transform.position.y, col.gameObject.transform.position.z);
+            _player.transform.position = new Vector3(col.x + (xzOffset * -transform.forward.x), _player.transform.position.y, _player.transform.position.z);
+
+            Debug.Log("X");
         }
         else if (forwardWall.z != 0)
         {
             //- (2 * forwardWall.z
-            _player.transform.position = new Vector3(col.gameObject.transform.position.x , _player.transform.position.y, col.gameObject.transform.position.z - xzOffset);
+            _player.transform.position = new Vector3(_player.transform.position.x, _player.transform.position.y, col.z + (xzOffset * -transform.forward.z));
+
+            Debug.Log("Z");
         }
         //set correct rotation
         Vector3 newRot = new Vector3(_player.transform.eulerAngles.x, transform.eulerAngles.y, _player.transform.eulerAngles.z);
@@ -75,7 +78,7 @@ public class PushableBlock : MonoBehaviour {
     {
         if (Input.GetAxis("Vertical") > 0)
         {
-            int forceToApply = 5;
+            int forceToApply = 2;
             Vector3 force = new Vector3(transform.forward.x * forceToApply, 0,transform.forward.z * forceToApply);
             GetComponent<Rigidbody>().AddForce(force);
         }

@@ -28,27 +28,26 @@ public class LedgeJump : MonoBehaviour {
     {
         #region offsetvalues
         //tweak offset values based on character model
-        float yOffset = 1.55f;
-        float xzOffset = 0.25f;
+        float yOffset = 1.4f;
+        float xzOffset = 0.33f;
         #endregion offsetvalues
-        if (forwardWall.x < 0)
+        if (forwardWall.x !=0)
         {
             //- (2 * forwardWall.x)
-            _player.transform.position = new Vector3(col.x, col.y - yOffset, _player.transform.position.z - xzOffset);
+            _player.transform.position = new Vector3(col.x + (xzOffset * -transform.forward.x), col.y - yOffset, _player.transform.position.z );
 
             Debug.Log("X");
         }
-        else if (forwardWall.z < 0)
+        else if (forwardWall.z !=0)
         {
             //- (2 * forwardWall.z
-            _player.transform.position = new Vector3(_player.transform.position.x - xzOffset, col.y - yOffset, col.z);
+            _player.transform.position = new Vector3(_player.transform.position.x , col.y - yOffset, col.z + (xzOffset * -transform.forward.z));
             
             Debug.Log("Z");
         }
         //set correct rotation
         Vector3 newRot = new Vector3(_player.transform.eulerAngles.x, transform.eulerAngles.y, _player.transform.eulerAngles.z);
         _player.transform.rotation = Quaternion.Euler(newRot);
-
 
         _characterControlScript.CurrentHangLocation = gameObject.transform.position; 
 
