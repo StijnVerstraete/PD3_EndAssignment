@@ -1,0 +1,6 @@
+component_depth: 15
+languages:
+- csharp
+exclude:
+- /Assets/3rd Party/.*
+- /Assets/ProCore/.*
