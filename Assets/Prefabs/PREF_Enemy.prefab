@@ -2173,11 +2173,21 @@ MonoBehaviour:
   _agent: {fileID: 195402938129125050}
   _player: {fileID: 0}
   _aiGlobal: {fileID: 0}
+  _muzzleFlash: {fileID: 0}
   _potentialCovers:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _gunBarrel: {fileID: 0}
+  Health: 3
+  IsAiming: 0
+  IsFalling: 0
+  IsSearching: 0
+  IsDead: 0
   IsCrouching: 0
 --- !u!114 &114836750576422722
 MonoBehaviour:

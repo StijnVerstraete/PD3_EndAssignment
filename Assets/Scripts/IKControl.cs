@@ -20,6 +20,7 @@ public class IKControl : MonoBehaviour {
     {
         if (IKActive)
         {
+            #region gunrelated
             //gun pickup IK
             if (RightHandPosition != null)
             {
@@ -39,6 +40,15 @@ public class IKControl : MonoBehaviour {
                 _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                 _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
             }
+            #endregion gunrelated
+            #region blockrelated
+            else if (_charCTRL.IsPushing)
+            {
+                //set shoulder positions
+                SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftShoulder),AvatarIKGoal.LeftHand);
+                SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightShoulder),AvatarIKGoal.RightHand);
+            }
+            #endregion blockrelated
             else
             {
                 _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
@@ -46,7 +56,17 @@ public class IKControl : MonoBehaviour {
 
                 _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
                 _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
-            }
+            }   
+        }
+    }
+    private void SetPushingIK(Transform Shoulder, AvatarIKGoal ikGoal)
+    {
+        RaycastHit hit;
+        Debug.Log("SetPushingIK");
+        if (Physics.Raycast(Shoulder.position,_charCTRL.transform.forward, out hit, 1 << 13))
+        {
+            _anim.SetIKPosition(ikGoal, hit.point);
+            _anim.SetIKPositionWeight(ikGoal, 1);
         }
     }
 }

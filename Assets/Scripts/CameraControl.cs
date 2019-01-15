@@ -46,7 +46,7 @@ public class CameraControl : MonoBehaviour
     }
     private void SetCharacterTurnTarget()
     {
-        if (Input.GetAxis("Vertical") >= _turnTreshold && !_charCTRLBehavior.IsHanging && !_charCTRLBehavior.IsClimbing && !_charCTRLBehavior.IsPushing)
+        if ((Input.GetAxis("Vertical") >= _turnTreshold ||(Input.GetAxis("Vertical") <= _turnTreshold &&_charCTRLBehavior.IsAiming)) && !_charCTRLBehavior.IsHanging && !_charCTRLBehavior.IsClimbing && !_charCTRLBehavior.IsPushing)
         {
             _charCTRLBehavior.Turn(Quaternion.Euler(new Vector3(0, transform.rotation.eulerAngles.y, 0)));
         }

@@ -36,13 +36,11 @@ public class PushableBlock : MonoBehaviour {
     }
     private void FixedUpdate()
     {
-
         //apply force if pushing
         if (_player.GetComponent<CharacterControllerBehaviour>().IsPushing)
         {
            ApplyForce();
         }
-
     }
     private void OnTriggerStay(Collider other)
     {
@@ -56,6 +54,8 @@ public class PushableBlock : MonoBehaviour {
                     CalculateSnappingPoint(other.gameObject.transform.forward, other.transform.position);
                     Debug.Log("check");
                     _player.GetComponent<CharacterControllerBehaviour>().IsPushing = true;
+                    //enable IK
+                    _player.GetComponent<IKControl>().IKActive = true;
                     //disable collider
                     _player.GetComponent<CapsuleCollider>().enabled = false;
                 }
@@ -70,13 +70,15 @@ public class PushableBlock : MonoBehaviour {
         {
             _player.GetComponent<CharacterControllerBehaviour>().IsPushing = false;
             _colliderEnableDelay = 2;
+            //disable IK
+            _player.GetComponent<IKControl>().IKActive = false;
         }
     }
     private void CalculateSnappingPoint(Vector3 forwardWall, Vector3 col)
     {
         #region offsetvalues
         //tweak offset values based on character model
-        float xzOffset = 0.2f;
+        float xzOffset = 0.35f;
         #endregion offsetvalues
         if (forwardWall.x != 0)
         {
@@ -104,5 +106,4 @@ public class PushableBlock : MonoBehaviour {
             GetComponent<Rigidbody>().AddForce(_player.transform.forward* forceToApply,ForceMode.Acceleration);
         }
     }
-
 }
