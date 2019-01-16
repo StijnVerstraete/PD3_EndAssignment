@@ -26,8 +26,6 @@ public class Shoot : MonoBehaviour {
         {
             if (Physics.Raycast(_screenCentre, out _hit,250, _layerMask))
             {
-                Debug.DrawRay(_screenCentre.origin, _screenCentre.direction, Color.cyan, 1);
-                Debug.Log("Shoot");
                 _muzzleFlash.SetActive(true);
                 _canShoot = false;
                 _flashDuration = 5;
@@ -42,14 +40,21 @@ public class Shoot : MonoBehaviour {
                 }
             }
         }   
-        if (Input.GetAxis("Shoot") == 0f)
-            _canShoot = true;
 
+        ShootDelays();
+    }
+    private void ShootDelays()
+    {
         //make flash go away
         _flashDuration--;
-        if (_flashDuration <=0)
+        if (_flashDuration <= 0)
         {
             _muzzleFlash.SetActive(false);
+        }
+        //enable shooting when trigger is no longer pressed
+        if (Input.GetAxis("Shoot") == 0f)
+        {
+            _canShoot = true;
         }
     }
 }

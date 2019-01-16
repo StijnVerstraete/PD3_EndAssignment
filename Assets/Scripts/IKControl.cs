@@ -24,38 +24,25 @@ public class IKControl : MonoBehaviour {
             //gun pickup IK
             if (RightHandPosition != null)
             {
-                _anim.SetIKPosition(AvatarIKGoal.RightHand, RightHandPosition.position);
-                _anim.SetIKRotation(AvatarIKGoal.RightHand, RightHandPosition.rotation);
-
-                _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-                _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+                SetGunIK();
             }
-
             //gun aim IK
             else if (_charCTRL.IsAiming)
             {
-                _anim.SetIKPosition(AvatarIKGoal.RightHand, new Vector3(_rightHand.position.x,_aimTarget.position.y,_rightHand.position.z));
-                _anim.SetIKPosition(AvatarIKGoal.LeftHand, new Vector3(_leftHand.position.x,_aimTarget.position.y,_leftHand.position.z));
-
-                _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-                _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+                SetAimIK();
             }
             #endregion gunrelated
             #region blockrelated
             else if (_charCTRL.IsPushing)
             {
-                //set shoulder positions
+                //set hand positions
                 SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftShoulder),AvatarIKGoal.LeftHand);
                 SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightShoulder),AvatarIKGoal.RightHand);
             }
             #endregion blockrelated
             else
             {
-                _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
-                _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
-
-                _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
-                _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
+                SetDefaultIK();
             }   
         }
     }
@@ -68,5 +55,29 @@ public class IKControl : MonoBehaviour {
             _anim.SetIKPosition(ikGoal, hit.point);
             _anim.SetIKPositionWeight(ikGoal, 1);
         }
+    }
+    private void SetGunIK()
+    {
+        _anim.SetIKPosition(AvatarIKGoal.RightHand, RightHandPosition.position);
+        _anim.SetIKRotation(AvatarIKGoal.RightHand, RightHandPosition.rotation);
+
+        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+        _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+    }
+    private void SetAimIK()
+    {
+        _anim.SetIKPosition(AvatarIKGoal.RightHand, new Vector3(_rightHand.position.x, _aimTarget.position.y, _rightHand.position.z));
+        _anim.SetIKPosition(AvatarIKGoal.LeftHand, new Vector3(_leftHand.position.x, _aimTarget.position.y, _leftHand.position.z));
+
+        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+        _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+    }
+    private void SetDefaultIK()
+    {
+        _anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+        _anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
+
+        _anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+        _anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
     }
 }
