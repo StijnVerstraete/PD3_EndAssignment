@@ -139,7 +139,6 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         if (Input.GetButton("RightJoystickClick") && Gun != null)
         {
             IsAiming = true;
-            Debug.Log("aim");
         }
         else
         {
@@ -181,7 +180,6 @@ public class CharacterControllerBehaviour : MonoBehaviour {
         IsClimbing = false;
         transform.position = new Vector3(transform.position.x + (transform.forward.x/2), CurrentHangLocation.y, transform.position.z + (transform.forward.z/2));
         _charCTRL.enabled = true;
-        Debug.Log("EventTrigger");
     }
     public void FinishPickingUp()
     {
@@ -189,7 +187,6 @@ public class CharacterControllerBehaviour : MonoBehaviour {
     }
     public void GunPickedUp()
     {
-        Debug.Log("GunPickedUp");
         Gun.transform.parent = _rightHand;
         Gun.transform.position = _rightHand.transform.position;
 

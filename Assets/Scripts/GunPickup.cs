@@ -28,7 +28,6 @@ public class GunPickup : MonoBehaviour {
             _IKControl.RightHandPosition = _IKTarget;
 
             _pickedUp = true;
-            Debug.Log("Pickup");
 
             //avoid sliding when there is still some velocity
             _characterControlScript.Velocity = new Vector3(0, 0, 0);

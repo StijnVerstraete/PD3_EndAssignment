@@ -153,7 +153,6 @@ public class AIBehaviour : MonoBehaviour {
             {
                 //find new position to go to
                 Vector3 newPos = transform.position + Random.insideUnitSphere * _maxIdleDistance;
-                Debug.DrawLine(newPos, Vector3.up, Color.red, 5);
                 NavMeshHit hit;
                 NavMesh.SamplePosition(newPos, out hit, Random.Range(0, _maxIdleDistance),1);
 
