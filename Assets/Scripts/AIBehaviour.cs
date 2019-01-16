@@ -67,9 +67,7 @@ public class AIBehaviour : MonoBehaviour {
         //hide muzzleflash (in update so that it always happens)
         _flashDuration--;
         if (_flashDuration <= 0)
-        {
             _muzzleFlash.SetActive(false);
-        }
         //die if health is too low
         if (Health <=0)
         {
@@ -115,23 +113,16 @@ public class AIBehaviour : MonoBehaviour {
         //check if current cover is valid
         if (Physics.Raycast(transform.position, transform.forward, out hit, 5,_layerMask)) 
         {
-            Debug.Log(hit.collider.gameObject.name);
             if (hit.collider.gameObject.tag != "Cover")
-            {
                 _inCover = false;
-            }
             else
             {
                 IsSearching = false;
                 _inCover = true;
             }
-            Debug.DrawRay(transform.position, transform.forward, Color.red, 10);
         }
         else
-        {
             _inCover = false;
-        }
-        Debug.Log("InCover" + _inCover);
         return _inCover;
     }
     IEnumerator<NodeResult> SearchCover()
@@ -181,72 +172,62 @@ public class AIBehaviour : MonoBehaviour {
     {
         //check if player enters possible viewrange of Ai
         if (other.tag == "Player")
-        {
             _playerInTrigger = true;
-        }
     }
     private void OnTriggerExit(Collider other)
     {
         //check if player exits possible viewrange of Ai
         if (other.tag == "Player")
-        {
             _playerInTrigger = false;
-        }
     }
     private void FindNewCover()
     {
-            //disable aiming
-            IsAiming = false;
-            //get nearest cover
-            Debug.Log("FindingCover");
-            Vector3 destinationTarget = transform.position;
-            foreach (GameObject cover in _potentialCovers)
-            {
-                if (_shortestDistanceToCover > Vector3.Distance(transform.position, cover.transform.position))
-                {
-                    _shortestDistanceToCover = Vector3.Distance(transform.position, cover.transform.position);
-                    _nearestCover = cover;
-                }
-            }
-            float offsetFromCover = 1.5f;
-            
-            if (Physics.Linecast(new Vector3(_player.transform.position.x,transform.position.y,_player.transform.position.z), _nearestCover.transform.position,out _hit,1<<10))
-            {
-                destinationTarget = new Vector3(_nearestCover.transform.position.x + (offsetFromCover * -_hit.normal.x), transform.position.y, _nearestCover.transform.position.z + (offsetFromCover * -_hit.normal.z));
-                Debug.Log("Recalculate cover position");
-            }
-            Debug.DrawRay(destinationTarget, Vector3.up, Color.blue, 5);
-            _agent.destination = destinationTarget;
+        Vector3 destinationTarget = transform.position;
+        float offsetFromCover = 1.5f;
+
+        //disable aiming
+        IsAiming = false;
+
+        //get nearest cover
+        FindNearestCover();
+   
+        if (Physics.Linecast(new Vector3(_player.transform.position.x,transform.position.y,_player.transform.position.z), _nearestCover.transform.position,out _hit,1<<10))
+        {
+            destinationTarget = new Vector3(_nearestCover.transform.position.x + (offsetFromCover * -_hit.normal.x), transform.position.y, _nearestCover.transform.position.z + (offsetFromCover * -_hit.normal.z));
+        }   
+    _agent.destination = destinationTarget;
     }
     private void FireBullet()
     {
         RaycastHit bulletHit;
         if (Physics.Linecast(_gunBarrel.transform.position,new Vector3(_player.transform.position.x,_player.transform.position.y + 1.2f,_player.transform.position.z),out bulletHit))
         {
-            Debug.DrawLine(_gunBarrel.transform.position, new Vector3(_player.transform.position.x, _player.transform.position.y + 1.2f, _player.transform.position.z), Color.green, 1);
-            //instantiate bullet
             //set bullet target depending on chance to hit
             if (_chanceToHit >= Random.Range(0,100) && bulletHit.collider.gameObject.tag == "Player")
             {
                 _player.GetComponent<CharacterControllerBehaviour>().Health -= 1;
                 //play hit animation
                 if (_player.GetComponent<CharacterControllerBehaviour>().Health > 0)
-                {
                     _player.GetComponent<Animator>().SetTrigger("IsHit");
-                }
             }
-            Debug.Log("AIShoots");
         }
     }
     private void CheckFalling()
     {
         if (Physics.Raycast(transform.position,Vector3.down,2f))
-        {
             IsFalling = false;
-        }
         else
-        {
             IsFalling = true;
+    }
+    private void FindNearestCover()
+    {
+        foreach (GameObject cover in _potentialCovers)
+        {
+            if (_shortestDistanceToCover > Vector3.Distance(transform.position, cover.transform.position))
+            {
+                _shortestDistanceToCover = Vector3.Distance(transform.position, cover.transform.position);
+                _nearestCover = cover;
+            }
         }
     }
 
