@@ -15,41 +15,29 @@ public class IKControl : MonoBehaviour {
     public Transform RightHandPosition;
     public bool IKActive;
 
-
     private void OnAnimatorIK()
     {
         if (IKActive)
         {
-            #region gunrelated
             //gun pickup IK
             if (RightHandPosition != null)
-            {
                 SetGunIK();
-            }
             //gun aim IK
             else if (_charCTRL.IsAiming)
-            {
                 SetAimIK();
-            }
-            #endregion gunrelated
-            #region blockrelated
             else if (_charCTRL.IsPushing)
             {
                 //set hand positions
                 SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.LeftShoulder),AvatarIKGoal.LeftHand);
                 SetPushingIK(_charCTRL.GetComponent<Animator>().GetBoneTransform(HumanBodyBones.RightShoulder),AvatarIKGoal.RightHand);
             }
-            #endregion blockrelated
             else
-            {
-                SetDefaultIK();
-            }   
+                SetDefaultIK(); 
         }
     }
     private void SetPushingIK(Transform Shoulder, AvatarIKGoal ikGoal)
     {
         RaycastHit hit;
-        Debug.Log("SetPushingIK");
         if (Physics.Raycast(Shoulder.position,_charCTRL.transform.forward, out hit, 1 << 13))
         {
             _anim.SetIKPosition(ikGoal, hit.point);

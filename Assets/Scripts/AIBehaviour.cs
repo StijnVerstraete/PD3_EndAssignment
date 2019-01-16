@@ -91,16 +91,12 @@ public class AIBehaviour : MonoBehaviour {
         float playerHeight = 0.5f;
         RaycastHit hit;
         if (!_aiGlobal.AIAlerted)
-        {
             if (Physics.Linecast(new Vector3(transform.position.x, transform.position.y + playerHeight, transform.position.z), new Vector3(_player.transform.position.x, _player.transform.position.y + playerHeight, _player.transform.position.z), out hit))
-            {
                 if (hit.collider.gameObject.tag == "Player")
                 {
                     _aiGlobal.AIAlerted = true;
                     return true;
                 }
-            }
-        }
         if (_aiGlobal.AIAlerted)
             return true;
 

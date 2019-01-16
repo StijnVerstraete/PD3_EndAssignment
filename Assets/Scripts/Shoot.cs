@@ -23,7 +23,6 @@ public class Shoot : MonoBehaviour {
     {
         _screenCentre = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         if (Input.GetAxis("Shoot")>0.1f && _charCTRL.IsAiming && _canShoot)
-        {
             if (Physics.Raycast(_screenCentre, out _hit,250, _layerMask))
             {
                 _muzzleFlash.SetActive(true);
@@ -34,13 +33,9 @@ public class Shoot : MonoBehaviour {
                     _hit.collider.gameObject.GetComponent<AIBehaviour>().Health -= 1;
                     //play hit animation
                     if (_hit.collider.gameObject.GetComponent<AIBehaviour>().Health > 0 )
-                    {
                         _hit.collider.gameObject.GetComponent<Animator>().SetTrigger("IsHit");
-                    }
                 }
             }
-        }   
-
         ShootDelays();
     }
     private void ShootDelays()
@@ -48,13 +43,9 @@ public class Shoot : MonoBehaviour {
         //make flash go away
         _flashDuration--;
         if (_flashDuration <= 0)
-        {
             _muzzleFlash.SetActive(false);
-        }
         //enable shooting when trigger is no longer pressed
         if (Input.GetAxis("Shoot") == 0f)
-        {
             _canShoot = true;
-        }
     }
 }
