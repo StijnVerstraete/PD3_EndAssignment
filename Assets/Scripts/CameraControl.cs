@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
+    //implementation details: design doc page 3
 
     [SerializeField] private Transform _cameraPivot;
     [SerializeField] private float _cameraSensitivity;

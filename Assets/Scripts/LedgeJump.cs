@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class LedgeJump : MonoBehaviour {
 
-    [SerializeField] private CharacterControllerBehaviour _characterControlScript;
+    //implementation details: design doc page 4
+
+    [SerializeField] private CharacterControllerBehaviour _characterControlScript;  
     [SerializeField] private GameObject _player;
 
     private void OnTriggerStay(Collider other)
@@ -19,8 +21,8 @@ public class LedgeJump : MonoBehaviour {
                 //disable components to avoid conflict
                 _characterControlScript.IsHanging = true;
 
-                //set y velocity to 0
-                _characterControlScript.Velocity.y = 0;
+                //set velocity to 0
+                _characterControlScript.Velocity = new Vector3(0, 0, 0);
             }
         }   
     }

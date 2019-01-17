@@ -8,6 +8,8 @@ using UnityEngine.AI;
 
 public class AIBehaviour : MonoBehaviour {
 
+    //implementation details: design doc page 9
+
     private INode _rootNode;
 
     [SerializeField] private NavMeshAgent _agent;
@@ -41,9 +43,8 @@ public class AIBehaviour : MonoBehaviour {
     public bool IsAiming;
     public bool IsFalling;
     public bool IsSearching;
-    public bool IsDead = false;
-
-    public bool IsCrouching = false;
+    public bool IsDead;
+    public bool IsCrouching;
 
     void Start()
     {
@@ -144,6 +145,7 @@ public class AIBehaviour : MonoBehaviour {
     }
     IEnumerator<NodeResult> Idle()
     {
+
         if (_agent.remainingDistance <= _agent.stoppingDistance)
         {
             //chance of picking a new position
@@ -177,6 +179,7 @@ public class AIBehaviour : MonoBehaviour {
     }
     private void FindNewCover()
     {
+
         Vector3 destinationTarget = transform.position;
         float offsetFromCover = 1.5f;
 

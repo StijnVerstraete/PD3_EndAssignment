@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 
 public class CharacterControllerBehaviour : MonoBehaviour {
 
+    //implementation details: design doc page 3
+
     [SerializeField] private CharacterController _charCTRL;
     [SerializeField] private IKControl _iKControl;
 

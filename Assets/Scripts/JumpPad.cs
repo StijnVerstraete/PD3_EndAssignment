@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JumpPad : MonoBehaviour {
 
+    //implementation details: design doc page 6
     [SerializeField] private GameObject _player;
     private float _jumpHeight = 4;
 

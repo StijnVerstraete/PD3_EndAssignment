@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class GunPickup : MonoBehaviour {
 
-	[SerializeField] private Transform _IKTarget;
+    //implementation details: design doc page 8
+
+    [SerializeField] private Transform _IKTarget;
     [SerializeField] private IKControl _IKControl;
     [SerializeField] private CharacterControllerBehaviour _characterControlScript;
 
     [SerializeField] private Transform _rightHand; 
     private bool _pickedUp = false;
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
     private void OnTriggerStay(Collider other)
     {
         if (Input.GetAxis("AButton") != 0 && !_pickedUp)

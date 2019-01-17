@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PushableBlock : MonoBehaviour {
 
+    //implementation details: design doc page 6
+
     [SerializeField] private GameObject _player;
     private float _colliderEnableDelay;
     private void Update()

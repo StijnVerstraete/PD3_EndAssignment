@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour {
 
-
+    //implementation details: design doc page 5
     [SerializeField] private CharacterControllerBehaviour _charCTRL;
 
     [SerializeField] private GameObject _muzzleFlash;
